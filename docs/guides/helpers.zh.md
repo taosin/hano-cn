@@ -1,8 +1,8 @@
-# 辅助工具
+# Helpers
 
-辅助工具可用于协助开发你的应用程序。与中间件不同，它们不作为 handlers 运行，而是提供有用的函数。
+Helpers 可用于协助开发你的应用程序。与中间件不同，它们不作为 handlers，而是提供有用的函数。
 
-例如，以下是如何使用 [Cookie 辅助工具](/docs/helpers/cookie)：
+例如，以下是使用 [Cookie helper](/docs/helpers/cookie) 的方法：
 
 ```ts
 import { getCookie, setCookie } from 'hono/cookie'
@@ -17,7 +17,7 @@ app.get('/cookie', (c) => {
 })
 ```
 
-## 可用的辅助工具
+## Available Helpers
 
 - [Accepts](/docs/helpers/accepts)
 - [Adapter](/docs/helpers/adapter)

@@ -1,15 +1,14 @@
-# 最佳实践
+# Best Practices
 
-Hono 非常灵活。你可以随意编写你的应用程序。
-然而，有一些最佳实践最好遵循。
+Hono 非常灵活。你可以随心所欲地编写应用程序。然而，有一些最佳实践最好遵循。
 
-## 尽可能不要创建 "Controllers"
+## Don't make "Controllers" when possible
 
-可能情况下，你不应该创建 "Ruby on Rails 风格的 Controllers"。
+在可能的情况下，你不应该创建"Ruby on Rails-like Controllers"。
 
 ```ts
 // 🙁
-// 一个 RoR 风格的 Controller
+// 一个 RoR-like Controller
 const booksList = (c: Context) => {
   return c.json('list books')
 }
@@ -17,18 +16,18 @@ const booksList = (c: Context) => {
 app.get('/books', booksList)
 ```
 
-问题与类型有关。例如，路径参数在 Controller 中无法推断，除非编写复杂的泛型。
+问题与类型有关。例如，路径参数无法在 Controller 中推断，除非编写复杂的泛型。
 
 ```ts
 // 🙁
-// 一个 RoR 风格的 Controller
+// 一个 RoR-like Controller
 const bookPermalink = (c: Context) => {
   const id = c.req.param('id') // 无法推断路径参数
   return c.json(`get ${id}`)
 }
 ```
 
-因此，你不需要创建 RoR 风格的 controllers，应该在路径定义后直接编写 handlers。
+因此，你不需要创建 RoR-like controllers，应该在路径定义后直接编写 handlers。
 
 ```ts
 // 😃
@@ -38,9 +37,9 @@ app.get('/books/:id', (c) => {
 })
 ```
 
-## `hono/factory` 中的 `factory.createHandlers()`
+## `factory.createHandlers()` in `hono/factory`
 
-如果你仍然想创建 RoR 风格的 Controller，请使用 [`hono/factory`](/docs/helpers/factory) 中的 `factory.createHandlers()`。如果使用这个，类型推断将正常工作。
+如果你仍然想创建 RoR-like Controller，使用 `hono/factory` 中的 `factory.createHandlers()`。如果使用这个，类型推断将正常工作。
 
 ```ts
 import { createFactory } from 'hono/factory'
@@ -63,11 +62,11 @@ const handlers = factory.createHandlers(logger(), middleware, (c) => {
 app.get('/api', ...handlers)
 ```
 
-## 构建更大的应用程序
+## Building a larger application
 
-使用 `app.route()` 来构建更大的应用程序，而无需创建 "Ruby on Rails 风格的 Controllers"。
+使用 `app.route()` 来构建更大的应用程序，而无需创建"Ruby on Rails-like Controllers"。
 
-如果你的应用程序有 `/authors` 和 `/books` 端点，并且你想从 `index.ts` 分离文件，请创建 `authors.ts` 和 `books.ts`。
+如果你的应用程序有 `/authors` 和 `/books` 端点，并且你想从 `index.ts` 分离文件，创建 `authors.ts` 和 `books.ts`。
 
 ```ts
 // authors.ts
@@ -112,10 +111,9 @@ app.route('/books', books)
 export default app
 ```
 
-### 如果你想使用 RPC 功能
+### If you want to use RPC features
 
-上面的代码在普通用例中工作良好。
-但是，如果你想使用 `RPC` 功能，你可以通过以下方式获得正确的类型。
+上面的代码在普通用例中效果很好。但是，如果你想使用 `RPC` 功能，你可以通过链式获取正确的类型。
 
 ```ts
 // authors.ts
@@ -140,4 +138,4 @@ import { hc } from 'hono/client'
 const client = hc<AppType>('http://localhost') // 正确推断类型
 ```
 
-有关更详细的信息，请参阅 [RPC 页面](/docs/guides/rpc#using-rpc-with-larger-applications)。
+更多详细信息，请查看 [RPC page](/docs/guides/rpc#using-rpc-with-larger-applications)。

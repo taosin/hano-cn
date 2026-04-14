@@ -2,9 +2,9 @@
 
 你可以使用 `hono/jsx` 用 JSX 语法编写 HTML。
 
-虽然 `hono/jsx` 可以在客户端工作，但你可能最常在服务器端渲染内容时使用它。以下是一些与 JSX 相关的事情，对服务器端和客户端都适用。
+虽然 `hono/jsx` 在客户端上工作，但你最常在服务器端渲染内容时使用它。以下是与 JSX 相关的一些对服务器和客户端都通用的事项。
 
-## 设置
+## Settings
 
 要使用 JSX，修改 `tsconfig.json`：
 
@@ -19,7 +19,7 @@
 }
 ```
 
-或者，使用 pragma 指令：
+或者，使用 pragma directives：
 
 ```ts
 /** @jsx jsx */
@@ -37,10 +37,10 @@
 }
 ```
 
-## 用法
+## Usage
 
 :::info
-如果你直接从 [快速开始](/docs/#quick-start) 开始，主文件的扩展名是 `.ts` - 你需要将其更改为 `.tsx` - 否则你将根本无法运行应用程序。你还应该修改 `package.json`（如果你使用 Deno，则修改 `deno.json`）以反映该更改（例如，在 dev 脚本中，不是 `bun run --hot src/index.ts`，你应该有 `bun run --hot src/index.tsx`）。
+如果你直接从 [Quick Start](/docs/#quick-start) 来，主文件的扩展名为 `.ts` - 你需要将其更改为 `.tsx` - 否则你将根本无法运行应用程序。你还应该修改 `package.json`（如果你使用 Deno 则为 `deno.json`）以反映该更改（例如，在 dev 脚本中不使用 `bun run --hot src/index.ts`，而应该使用 `bun run --hot src/index.tsx`）。
 :::
 
 `index.tsx`：
@@ -82,9 +82,9 @@ app.get('/', (c) => {
 export default app
 ```
 
-## 元数据提升
+## Metadata hoisting
 
-你可以在组件内部直接编写文档元数据标签，如 `<title>`、`<link>` 和 `<meta>`。这些标签将自动提升到文档的 `<head>` 部分。这在 `<head>` 元素远离确定适当元数据的组件时特别有用。
+你可以直接在组件内编写文档元数据标签，如 `<title>`、`<link>` 和 `<meta>`。这些标签将自动提升到文档的 `<head>` 部分。当 `<head>` 元素远离确定适当元数据的组件渲染时，这特别有用。
 
 ```tsx
 import { Hono } from 'hono'
@@ -117,7 +117,7 @@ export default app
 ```
 
 :::info
-当发生提升时，现有元素不会被删除。稍后出现的元素会被添加到末尾。例如，如果你的 `<head>` 中有 `<title>Default</title>` 并且组件渲染 `<title>Page Title</title>`，两个标题都会出现在 head 中。
+当发生提升时，现有元素不会被移除。后面出现的元素会添加到末尾。例如，如果你在 `<head>` 中有 `<title>Default</title>` 并且组件渲染 `<title>Page Title</title>`，两个标题都会出现在 head 中。
 :::
 
 ## Fragment
@@ -136,7 +136,7 @@ const List = () => (
 )
 ```
 
-或者，如果正确设置，你可以使用 `<></>` 编写。
+或者，如果设置正确，你可以用 `<></>` 编写。
 
 ```tsx
 const List = () => (
@@ -150,7 +150,7 @@ const List = () => (
 
 ## `PropsWithChildren`
 
-你可以使用 `PropsWithChildren` 正确推断函数组件中的子元素。
+你可以使用 `PropsWithChildren` 在函数组件中正确推断子元素。
 
 ```tsx
 import { PropsWithChildren } from 'hono/jsx'
@@ -170,7 +170,7 @@ function Component({ title, children }: PropsWithChildren<Post>) {
 }
 ```
 
-## 插入原始 HTML
+## Inserting Raw HTML
 
 要直接插入 HTML，使用 `dangerouslySetInnerHTML`：
 
@@ -181,9 +181,9 @@ app.get('/foo', (c) => {
 })
 ```
 
-## 记忆化
+## Memoization
 
-使用 `memo` 记忆计算的字符串来优化你的组件：
+使用 `memo` 通过记忆计算的字符串来优化你的组件：
 
 ```tsx
 import { memo } from 'hono/jsx'
@@ -201,7 +201,7 @@ const Layout = (
 
 ## Context
 
-通过使用 `useContext`，你可以在组件树的任何级别全局共享数据，而无需通过 props 传递值。
+通过使用 `useContext`，你可以在 Component 树的任何级别全局共享数据，而无需通过 props 传递值。
 
 ```tsx
 import type { FC } from 'hono/jsx'
@@ -246,10 +246,9 @@ app.get('/', (c) => {
 })
 ```
 
-## 异步组件
+## Async Component
 
-`hono/jsx` 支持异步组件，所以你可以在组件中使用 `async`/`await`。
-如果你用 `c.html()` 渲染它，它将自动等待。
+`hono/jsx` 支持 Async Component，因此你可以在组件中使用 `async`/`await`。如果你使用 `c.html()` 渲染它，它将自动等待。
 
 ```tsx
 const AsyncComponent = async () => {
@@ -270,9 +269,7 @@ app.get('/', (c) => {
 
 ## Suspense <Badge style="vertical-align: middle;" type="warning" text="Experimental" />
 
-可以使用类似 React 的 `Suspense` 功能。
-如果你用 `Suspense` 包装异步组件，fallback 中的内容将首先渲染，一旦 Promise 解决，将显示等待的内容。
-你可以将它与 `renderToReadableStream()` 一起使用。
+可以使用 React-like 的 `Suspense` 功能。如果你用 `Suspense` 包装 async component，fallback 中的内容将首先渲染，一旦 Promise 解析，将显示等待的内容。你可以将其与 `renderToReadableStream()` 一起使用。
 
 ```tsx
 import { renderToReadableStream, Suspense } from 'hono/jsx/streaming'
@@ -323,7 +320,7 @@ app.get('/sync', async (c) => {
 })
 ```
 
-`ErrorBoundary` 也可以与异步组件和 `Suspense` 一起使用。
+`ErrorBoundary` 也可以与 async components 和 `Suspense` 一起使用。
 
 ```tsx
 async function AsyncComponent() {
@@ -349,7 +346,7 @@ app.get('/with-suspense', async (c) => {
 
 ## StreamingContext <Badge style="vertical-align: middle;" type="warning" text="Experimental" />
 
-你可以使用 `StreamingContext` 为 `Suspense` 和 `ErrorBoundary` 等流式组件提供配置。这对于为这些组件生成的脚本标签添加 nonce 值以用于内容安全策略 (CSP) 很有用。
+你可以使用 `StreamingContext` 为 `Suspense` 和 `ErrorBoundary` 等流式组件提供配置。这对于为这些组件生成的脚本标签添加 nonce 值以用于 Content Security Policy (CSP) 很有用。
 
 ```tsx
 import { Suspense, StreamingContext } from 'hono/jsx/streaming'
@@ -384,10 +381,9 @@ app.get('/', (c) => {
 
 `scriptNonce` 值将自动添加到 `Suspense` 和 `ErrorBoundary` 组件生成的任何 `<script>` 标签中。
 
-## 与 html 中间件集成
+## Integration with html Middleware
 
-结合 JSX 和 HTML 中间件以获得强大的模板功能。
-有关详细信息，请参阅 [HTML 中间件文档](/docs/helpers/html)。
+结合 JSX 和 HTML middlewares 以实现强大的模板。有关详细信息，请咨询 [HTML middleware documentation](/docs/helpers/html)。
 
 ```tsx
 import { Hono } from 'hono'
@@ -431,11 +427,11 @@ app.get('/:name', (c) => {
 export default app
 ```
 
-## 与 JSX Renderer 中间件一起使用
+## With JSX Renderer Middleware
 
-[JSX Renderer 中间件](/docs/middleware/builtin/jsx-renderer) 允许你更轻松地使用 JSX 创建 HTML 页面。
+[JSX Renderer Middleware](/docs/middleware/builtin/jsx-renderer) 允许你更轻松地使用 JSX 创建 HTML 页面。
 
-## 覆盖类型定义
+## Override type definitions
 
 你可以覆盖类型定义以添加自定义元素和属性。
 
