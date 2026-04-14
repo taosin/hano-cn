@@ -1,12 +1,12 @@
 # Better Auth
 
-Using Hono with [Better Auth](http://better-auth.com/) for authentication.
+使用 Hono 搭配 [Better Auth](http://better-auth.com/) 进行认证。
 
-Better Auth is a framework-agnostic authentication and authorization framework for TypeScript. It provides a comprehensive set of features out of the box and includes a plugin ecosystem that simplifies adding advanced functionalities.
+Better Auth 是一个与框架无关的 TypeScript 认证和授权框架。它提供了全面的开箱即用功能，并包含一个插件生态系统，可简化高级功能的添加。
 
-## Configuration
+## 配置
 
-1. Install the framework:
+1. 安装框架：
 
 ```sh
 # npm
@@ -22,14 +22,14 @@ pnpm add better-auth
 yarn add better-auth
 ```
 
-2. Add the required environment variables in the `.env` file:
+2. 在 `.env` 文件中添加所需的环境变量：
 
 ```sh
-BETTER_AUTH_SECRET=<generate-a-secret-key> (e.g. D27gijdvth3Ul3DjGcexjcFfgCHc8jWd)
-BETTER_AUTH_URL=<url-of-your-server> (e.g. http://localhost:1234)
+BETTER_AUTH_SECRET=<生成一个密钥> (例如 D27gijdvth3Ul3DjGcexjcFfgCHc8jWd)
+BETTER_AUTH_URL=<你的服务器 URL> (例如 http://localhost:1234)
 ```
 
-3. Create the Better Auth instance
+3. 创建 Better Auth 实例
 
 ```ts
 import { betterAuth } from 'better-auth'
@@ -42,7 +42,7 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
-  // Allow requests from the frontend development server
+  // 允许来自前端开发服务器的请求
   trustedOrigins: ['http://localhost:5173'],
   emailAndPassword: {
     enabled: true,
@@ -65,23 +65,23 @@ export type AuthType = {
 }
 ```
 
-The above code:
+上述代码：
 
-- Sets up the database to use Prisma ORM and PostgreSQL
-- Specifies the trusted origins
-  - A trusted origin is the app that's allowed to make requests to the auth API. Normally, that's your client (frontend)
-  - All the other origins are automatically blocked
-- It enables email/password authentication and configures social login providers.
+- 设置数据库使用 Prisma ORM 和 PostgreSQL
+- 指定受信任的源
+  - 受信任的源是允许向认证 API 发出请求的应用。通常，那是你的客户端（前端）
+  - 所有其他源会被自动阻止
+- 启用邮箱/密码认证并配置社交登录提供商。
 
-4. Generate all the required models, fields, and relationships to the Prisma schema file:
+4. 生成所有必需的模型、字段和关系到 Prisma schema 文件：
 
 ```sh
 bunx @better-auth/cli generate
 ```
 
-5. Create the API Handler for the auth API requests in `routes/auth.ts`
+5. 在 `routes/auth.ts` 中为认证 API 请求创建 API 处理器
 
-This route uses the handler provided by Better Auth to serve all `POST` and `GET` requests to the `/api/auth` endpoint.
+此路由使用 Better Auth 提供的处理器来服务所有对 `/api/auth` 端点的 `POST` 和 `GET` 请求。
 
 ```ts
 import { Hono } from 'hono'
@@ -99,9 +99,9 @@ router.on(['POST', 'GET'], '/auth/*', (c) => {
 export default router
 ```
 
-6. Mount the route
+6. 挂载路由
 
-The code below mounts the route.
+以下代码挂载路由。
 
 ```ts
 import { Hono } from "hono";
@@ -112,7 +112,7 @@ const app = new Hono<{ Variables: AuthType }>({
   strict: false,
 });
 
-const routes = [auth, ...other routes] as const;
+const routes = [auth, ...其他路由] as const;
 
 routes.forEach((route) => {
   app.basePath("/api").route("/", route);
@@ -121,7 +121,7 @@ routes.forEach((route) => {
 export default app;
 ```
 
-## See also
+## 另请参阅
 
-- [Repository with the complete code](https://github.com/catalinpit/example-app/)
-- [Better Auth with Hono, Bun, TypeScript, React and Vite](https://catalins.tech/better-auth-with-hono-bun-typescript-react-vite/)
+- [包含完整代码的仓库](https://github.com/catalinpit/example-app/)
+- [使用 Hono、Bun、TypeScript、React 和 Vite 的 Better Auth](https://catalins.tech/better-auth-with-hono-bun-typescript-react-vite/)

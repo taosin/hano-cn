@@ -1,10 +1,10 @@
-# Cloudflare Testing
+# Cloudflare 测试
 
-You can implement the Cloudflare testing easily with `@cloudflare/vitest-pool-workers` for which some configuration has to be made priorly more on that can be found over in [Cloudflare Docs about testing](https://developers.cloudflare.com/workers/testing/vitest-integration/get-started/write-your-first-test/).
+你可以使用 `@cloudflare/vitest-pool-workers` 轻松实现 Cloudflare 测试，为此需要预先进行一些配置，更多信息请参阅 [Cloudflare 关于测试的文档](https://developers.cloudflare.com/workers/testing/vitest-integration/get-started/write-your-first-test/)。
 
-Cloudflare Testing with vitest pool workers provide a `cloudflare:test` module at runtime which exposes the env passed in as the second argument during testing more on it in the [Cloudflare Test APIs section](https://developers.cloudflare.com/workers/testing/vitest-integration/test-apis/).
+Cloudflare Testing 与 vitest pool workers 在运行时提供了一个 `cloudflare:test` 模块，该模块公开了在测试期间作为第二个参数传入的 env，更多信息请参阅 [Cloudflare Test APIs 部分](https://developers.cloudflare.com/workers/testing/vitest-integration/test-apis/)。
 
-Below is an example of the configuration one can make:
+下面是一个配置示例：
 
 :::code-group
 
@@ -33,7 +33,7 @@ MY_VAR = "my variable"
 
 :::
 
-Imagine the application like the following:
+假设应用如下所示：
 
 ```ts
 // src/index.ts
@@ -52,7 +52,7 @@ app.get('/hello', (c) => {
 export default app
 ```
 
-You can test the application with Cloudflare Bindings by passing in the `env` exposed from the module `cloudflare:test` to `app.request()`:
+你可以通过将从模块 `cloudflare:test` 公开的 `env` 传递给 `app.request()` 来测试带有 Cloudflare Bindings 的应用：
 
 ```ts
 // src/index.test.ts
@@ -72,7 +72,7 @@ describe('Example', () => {
 })
 ```
 
-## See Also
+## 另请参阅
 
-`@cloudflare/vitest-pool-workers` [Github Repository examples](https://github.com/cloudflare/workers-sdk/tree/main/fixtures/vitest-pool-workers-examples)\
-[Migrate from old testing system](https://developers.cloudflare.com/workers/testing/vitest-integration/get-started/migrate-from-miniflare-2/)
+`@cloudflare/vitest-pool-workers` [GitHub 仓库示例](https://github.com/cloudflare/workers-sdk/tree/main/fixtures/vitest-pool-workers-examples)\
+[从旧测试系统迁移](https://developers.cloudflare.com/workers/testing/vitest-integration/get-started/migrate-from-miniflare-2/)

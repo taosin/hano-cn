@@ -1,31 +1,31 @@
-# Hono Auth.js Integration
+# Hono Auth.js 集成
 
-This guide shows you how to add authentication to your Hono applications using **Auth.js** (formerly NextAuth.js).
+本指南向你展示如何使用 **Auth.js**（前身为 NextAuth.js）为你的 Hono 应用添加认证功能。
 
 > [!IMPORTANT]
-> The `@hono/auth-js` package currently **only supports React** for client-side integration.
+> `@hono/auth-js` 包目前**仅支持 React** 用于客户端集成。
 
-## Quick Start
+## 快速开始
 
-Get authentication running in 5 minutes:
+5 分钟内运行认证：
 
-1. **Install** → `npm install @hono/auth-js @auth/core`
-2. **Set environment variables** → Copy the `.env` example below
-3. **Create database tables** → Run the schema migration
-4. **Add auth routes** → Copy the Hono setup
-5. **Test it** → Use the client example
+1. **安装** → `npm install @hono/auth-js @auth/core`
+2. **设置环境变量** → 复制下面的 `.env` 示例
+3. **创建数据库表** → 运行 schema 迁移
+4. **添加认证路由** → 复制 Hono 设置
+5. **测试** → 使用客户端示例
 
-## Installation
+## 安装
 
 ```bash
 npm install hono @hono/auth-js @auth/core
 ```
 
-## Setup
+## 设置
 
-### Step 1: Environment Variables
+### 步骤 1：环境变量
 
-Create a `.env` file in your project root:
+在项目根目录创建 `.env` 文件：
 
 ```properties
 AUTH_SECRET=your-auth-secret-here
@@ -36,16 +36,16 @@ GOOGLE_SECRET=your-google-client-secret
 ```
 
 > [!TIP]
-> Generate a strong `AUTH_SECRET` with:
+> 使用以下命令生成强 `AUTH_SECRET`：
 > `openssl rand -base64 32`
-> or use: `npx auth secret`
+> 或使用：`npx auth secret`
 
-### Step 2: Database Setup
+### 步骤 2：数据库设置
 
 > [!NOTE]
-> Copy the latest schema from the [Auth.js Drizzle adapter docs](https://authjs.dev/getting-started/adapters/drizzle).
+> 从 [Auth.js Drizzle adapter 文档](https://authjs.dev/getting-started/adapters/drizzle) 复制最新的 schema。
 
-Here's a schema for **SQLite with Drizzle ORM**:
+以下是 **SQLite 搭配 Drizzle ORM** 的 schema：
 
 ::: code-group
 
@@ -154,11 +154,11 @@ export const authenticators = sqliteTable(
 
 :::
 
-## Basic Usage
+## 基本用法
 
-### Route Setup
+### 路由设置
 
-Create an API route in your Hono application:
+在你的 Hono 应用中创建 API 路由：
 
 ```ts
 import { Hono } from 'hono'
@@ -210,9 +210,9 @@ const app = new Hono().route('/api/v1', v1Router)
 export default app
 ```
 
-## Usage Examples
+## 用法示例
 
-### Protecting Routes
+### 保护路由
 
 ```ts
 app.get('/protected', (c) => {
@@ -222,7 +222,7 @@ app.get('/protected', (c) => {
 })
 ```
 
-### Client-side Integration (React)
+### 客户端集成（React）
 
 ```tsx
 import {
@@ -251,21 +251,21 @@ export default function Root() {
 }
 ```
 
-## Configuration Reference
+## 配置参考
 
-Customize Auth.js in your Hono app with:
+使用以下选项在你的 Hono 应用中自定义 Auth.js：
 
-- **Adapter** → Connects to your database (Drizzle shown above)
-- **Providers** → GitHub, Google, or any Auth.js provider
-- **Session** → `"jwt"` (stateless) or `"database"` (persistent)
-- **Callbacks** → Hook into sign-in or session events
+- **Adapter** → 连接到你的数据库（上面展示了 Drizzle）
+- **Providers** → GitHub、Google 或任何 Auth.js 提供商
+- **Session** → `"jwt"`（无状态）或 `"database"`（持久化）
+- **Callbacks** → 钩入登录或会话事件
 
-Example:
+示例：
 
 ```ts
 initAuthConfig((c) => ({
   adapter: DrizzleAdapter(c.get('db'), {
-    /* tables */
+    /* 表 */
   }),
   secret: c.env.AUTH_SECRET,
   providers: [
@@ -287,8 +287,8 @@ initAuthConfig((c) => ({
 }))
 ```
 
-## Learn More
+## 了解更多
 
-- [Auth.js Docs](https://authjs.dev/) – providers, schema reference
-- [Hono Docs](https://hono.dev/) – routing & middleware patterns
-- Recipes: role-based access, password reset, email verification
+- [Auth.js 文档](https://authjs.dev/) – 提供商、schema 参考
+- [Hono 文档](https://hono.dev/) – 路由和中间件模式
+- 实践：基于角色的访问、密码重置、邮箱验证

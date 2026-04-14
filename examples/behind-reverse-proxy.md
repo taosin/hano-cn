@@ -1,8 +1,8 @@
-# Bind a reverse proxy
+# 绑定反向代理
 
-Suppose you want to run the Hono application behind a reverse proxy. In that case, you may need to reflect the value of the `x-forwarded-proto` header. For example, you need to be able to get the protocol of the URL specified by `x-forwarded-proto` in `c.req.url`.
+假设你想在反向代理后面运行 Hono 应用。在这种情况下，你可能需要反映 `x-forwarded-proto` 头的值。例如，你需要能够在 `c.req.url` 中获取 `x-forwarded-proto` 指定的 URL 协议。
 
-The best practice for handling this is to create a new `Request` object before Hono's `app.fetch` and pass it to `app.fetch`.
+处理这个问题的最佳实践是在 Hono 的 `app.fetch` 之前创建一个新的 `Request` 对象，并将其传递给 `app.fetch`。
 
 ## Cloudflare Workers / Deno / Bun
 

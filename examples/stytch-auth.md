@@ -1,12 +1,10 @@
-# Stytch Auth with Hono
+# 使用 Hono 的 Stytch Auth
 
-This example shows how to set up a full-stack application with Stytch Frontend SDKs and Hono backend on Cloudflare
-Workers with `vite` and `react`.
+本示例展示了如何在 Cloudflare Workers 上使用 Stytch Frontend SDK 和 Hono backend 设置全栈应用，搭配 `vite` 和 `react`。
 
-A complete example application using these principles can be
-found [here](https://github.com/honojs/examples/tree/main/stytch-auth).
+使用这些原则的完整示例应用可以在 [这里](https://github.com/honojs/examples/tree/main/stytch-auth) 找到。
 
-## Installation
+## 安装
 
 ::: code-group
 
@@ -44,16 +42,15 @@ bun add @stytch/react @stytch/vanilla-js
 
 :::
 
-## Setup
+## 设置
 
-1. Create a [Stytch](https://stytch.com/?utm_source=hono&utm_medium=website&utm_campaign=workers) account and select
-   **Consumer Authentication**.
-2. Enable the **Frontend SDK** in [Configuration](https://stytch.com/dashboard/sdk-configuration).
-3. Get your credentials from [Project Settings](https://stytch.com/dashboard).
+1. 创建 [Stytch](https://stytch.com/?utm_source=hono&utm_medium=website&utm_campaign=workers) 账户并选择 **Consumer Authentication**。
+2. 在 [Configuration](https://stytch.com/dashboard/sdk-configuration) 中启用 **Frontend SDK**。
+3. 从 [Project Settings](https://stytch.com/dashboard) 获取你的凭证。
 
-## Environment Variables
+## 环境变量
 
-Backend Workers env vars go in `.dev.vars`. Frontend Vite env vars go in `.env.local`.
+Backend Workers 环境变量放在 `.dev.vars` 中。Frontend Vite 环境变量放在 `.env.local` 中。
 
 ::: code-group
 
@@ -68,14 +65,12 @@ VITE_STYTCH_PUBLIC_TOKEN=public-token-live-xxx
 
 :::
 
-## Frontend
+## 前端
 
-1. Wrap your application with the `<StytchProvider />` component and pass it an instance of the Stytch UI Client.
-2. Use the `<StytchLogin />` component to log the user in. See
-   the [Component Playground](https://stytch.com/docs/sdks/component-playground) for examples of different
-   authentication methods and style customizations available.
-3. After the user is logged in, the `useStytchUser()` hook can be used to retrieve the active user data.
-4. The user's session information will automatically be stored as a cookie and made available to your backend.
+1. 使用 `<StytchProvider />` 组件包装你的应用，并传入 Stytch UI Client 的实例。
+2. 使用 `<StytchLogin />` 组件让用户登录。查看 [Component Playground](https://stytch.com/docs/sdks/component-playground) 了解不同认证方法和样式自定义的示例。
+3. 用户登录后，可以使用 `useStytchUser()` 钩子检索活跃用户数据。
+4. 用户的会话信息将自动存储为 cookie 并可供你的 backend 使用。
 
 ::: code-group
 
@@ -154,11 +149,9 @@ export default Dashboard
 
 ## Backend
 
-1. Wrap protected endpoints with a `Consumer.authenticateSessionLocal()` middleware to authenticate the Stytch session
-   JWT.
-2. Use the `Consumer.getStytchSession(c)` method to retrieve the Stytch session information within a route.
-3. Routes that require the full user object can use the `Consumer.authenticateSessionRemote()` method to perform a
-   network call to Stytch servers.
+1. 使用 `Consumer.authenticateSessionLocal()` 中间件包装受保护的端点以认证 Stytch 会话 JWT。
+2. 在路由中使用 `Consumer.getStytchSession(c)` 方法检索 Stytch 会话信息。
+3. 需要完整用户对象的路由可以使用 `Consumer.authenticateSessionRemote()` 方法向 Stytch 服务器执行网络调用。
 
 ```ts[src/index.ts]
 import { Hono } from 'hono'
@@ -166,10 +159,10 @@ import { Consumer } from '@hono/stytch-auth'
 
 const app = new Hono()
 
-// Public route
+// 公共路由
 app.get('/health', (c) => c.json({ status: 'ok' }))
 
-// Protected route with local authentication (very fast)
+// 具有本地认证的受保护路由（非常快）
 app.get('/api/local', Consumer.authenticateSessionLocal(), (c) => {
   const session = Consumer.getStytchSession(c)
   return c.json({
@@ -178,7 +171,7 @@ app.get('/api/local', Consumer.authenticateSessionLocal(), (c) => {
   })
 })
 
-// Protected route with remote authentication & full user data
+// 具有远程认证和完整用户数据的受保护路由
 app.get('/api/remote', Consumer.authenticateSessionRemote(), (c) => {
   const session = Consumer.getStytchSession(c)
   const user = Consumer.getStytchUser(c)
@@ -192,16 +185,14 @@ app.get('/api/remote', Consumer.authenticateSessionRemote(), (c) => {
 export default app
 ```
 
-## Next Steps
+## 下一步
 
-Additional documentation and resources:
+更多文档和资源：
 
-- Check out the [Stytch Auth Hono Example App](https://github.com/honojs/examples/tree/main/stytch-auth).
-- Getting Started guide for the [Stytch JS SDK](https://stytch.com/docs/sdks/installation).
-- Complete documentation for the [@hono/stytch-auth package](https://www.npmjs.com/package/@hono/stytch-auth).
+- 查看 [Stytch Auth Hono 示例应用](https://github.com/honojs/examples/tree/main/stytch-auth)。
+- [Stytch JS SDK](https://stytch.com/docs/sdks/installation) 入门指南。
+- [@hono/stytch-auth 包](https://www.npmjs.com/package/@hono/stytch-auth) 完整文档。
 
-Interested in Enterprise B2B features like Organization Management, RBAC, and SSO? See
-the [Stytch B2B Authentication](https://stytch.com/docs/getting-started/b2b-vs-consumer-auth) product line.
+对企业 B2B 功能（如组织管理、RBAC 和 SSO）感兴趣？查看 [Stytch B2B Authentication](https://stytch.com/docs/getting-started/b2b-vs-consumer-auth) 产品线。
 
-Join the discussion, ask questions, and suggest new features in
-the [Stytch Slack Community](https://stytch.com/docs/resources/support/overview).
+加入讨论、提问并在 [Stytch Slack Community](https://stytch.com/docs/resources/support/overview) 中建议新功能。
